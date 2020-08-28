@@ -1,5 +1,8 @@
 #include <Windows.h>
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+//void CreateMenubar(HWND);
+//void OpenDialog(HWND);
+//void LoadFile(LPSTR);
 void CreateMenubar(HWND);
 void OpenDialog(HWND);
 void LoadFile(LPSTR);
