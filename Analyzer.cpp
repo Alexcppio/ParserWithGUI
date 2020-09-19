@@ -11,85 +11,89 @@ Analyzer::Analyzer(string sourceText, vector<pair<string, string>> lexems)
 
 void Analyzer::makeArticle()
 {
-	size_t i = 0;
-	int evenOdd = 0;
 
-	//it = this->lexems.begin();
-	/*
-	string str;
-	titleText += "2";
-	for (pair<string, string> n : this->lexems)
+	for (pair<string, string> n : lexems)
 	{
-		titleText += "2";
-		if (n.first == (str = ("headerStart")))
+		if (n.first == "headerStart")
 		{
 			foundStart = sourceText.find(n.second) + n.second.length();
-			titleText += "2";
-			str = "";
-		} 
-		else if (n.first == (str = ("headerEnd")))
-		{
-			foundEnd = sourceText.find(n.second);
-			titleText += "2";
-			//titleText.append(sourceText, foundStart, (foundEnd - foundStart));
-		}
 
-		else if (n.first == "dateStart" && sourceText.find(n.second)) 
-		{
-			foundStart = sourceText.find(n.second) + n.second.length();
-			dateText.append(sourceText, foundStart, 10);
 		}
-		else if (n.first == "articlePieceStart" && sourceText.find(n.second)) 
-		{
-			foundStart = sourceText.find(n.second) + n.second.length();
-		}
-		else if (n.first == "articlePieceEnd" && sourceText.find(n.second)) 
+		else if (n.first == "headerEnd")
 		{
 			foundEnd = sourceText.find(n.second);
-			articleText.append(sourceText, foundStart, (foundEnd - foundStart));
-			articleText.append("\n");
-		}
-		else if (n.first == "hrefSkipStart" && articleText.find(n.second))
-		{
-			foundStart = sourceText.find(n.second) + n.second.length();
-		}
-		else if (n.first == "hrefSkipQuote" && articleText.find(n.second)) 
-		{
-			foundEnd = articleText.find(n.second, foundStart);
-			articleText.erase(foundStart, (foundEnd - foundStart + 1));
-		}
-		else if (n.first == "hrefSkipEnd" && articleText.find(n.second)) 
-		{
-			foundStart = articleText.find(n.second);
-			foundEnd = foundStart + n.second.length();
-			articleText.erase(foundStart, (foundEnd - foundStart + 1));
-		}
-		else if (n.first == "nobrSkipOpen" && articleText.find(n.second))
-		{
-			foundStart = articleText.find(n.second);
-			foundEnd = foundStart + n.second.length();
-			articleText.erase(foundStart - 1, (foundEnd - foundStart + 2));
+			titleText.append(sourceText, foundStart, (foundEnd - foundStart));
 		}
 	}
-	*/
+
+	for (pair<string, string> n : lexems)
+	{
+		if (n.first == "dateStart")
+		{
+		foundStart = sourceText.find(n.second) + n.second.length();
+		dateText.append(sourceText, foundStart, 10);
+		}
+	}
+	
+	for (pair<string, string> n : lexems)
+	{
+		if (n.first == "articlePieceStart")
+		{
+			foundStart = sourceText.find(n.second) + n.second.length();
+
+			for (pair<string, string> n : lexems)
+			{
+				if (n.first == "articlePieceEnd")
+				{
+					foundEnd = sourceText.find(n.second);
+					articleText.append(sourceText, foundStart, (foundEnd - foundStart));
+					articleText.append("\n");
+				}
+			}
+		}
+	}
+	
+	size_t i = 0;
+	for (pair<string, string> n : lexems)
+	{
+		i = 0;
+		if (n.first == "hrefSkipStart")
+		{
+			for (i = articleText.find(n.second, i++); i != string::npos; i = articleText.find(n.second, i + 1))
+			{
+				if (articleText.find(n.second)) {
+					foundStart = articleText.find(n.second);
+					foundEnd = articleText.find(">", foundStart);
+					articleText.erase(foundStart, (foundEnd - foundStart + 1));
+				}
+			}
+		}
+	}
+
+	for (pair<string, string> n : lexems)
+	{
+		i = 0;
+		if (n.first == "parClose" || n.first == "quotes" || n.first == "parOpen" || n.first == "hrefSkipEnd" || n.first == "ndash" || n.first == "garb")
+		{
+			for (i = articleText.find(n.second, i++); i != string::npos; i = articleText.find(n.second, i + 1))
+			{
+				if (articleText.find(n.second)) {
+					foundStart = articleText.find(n.second);
+					foundEnd = foundStart + n.second.length();
+					articleText.erase(foundStart, (foundEnd - foundStart + 1));
+				}
+			}
+		}
+	}
+	
 }
 
 void Analyzer::save(string path)
 {
-	std::ofstream fin(path);
+	std::ofstream fin(path, std::ios_base::out | std::ios_base::trunc);
 	fin << titleText << endl;
 	fin << dateText << endl;
 	fin << articleText << endl;
-	//fin << sourceText << endl;
-	
-	fin << "Received" << endl;
-
-	for (pair<string, string> n : lexems)
-	{
-		fin << n.first;
-		fin << " - ";
-		fin << n.second << endl;
-	}
 
 	fin.close();
 }

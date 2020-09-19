@@ -26,7 +26,6 @@ class MainApp
 	};
 public:
 	MainApp();
-
 	int run();
 
 private:

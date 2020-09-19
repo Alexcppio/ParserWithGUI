@@ -35,7 +35,7 @@ struct Mail
 {
 public:
 	vector<pair<string, string>> lexems = {
-		{ "headerStart", "< h1 class = \"hdr__inner\">" },
+		{ "headerStart", "<h1 class=\"hdr__inner\">" },
 		{ "headerEnd", "</h1" },
 		{ "dateStart", "datetime=\"" },
 		{ "articlePieceStart", "article__item article__item_alignment_left article__item_html\"><p>"},
@@ -44,7 +44,7 @@ public:
 		{ "hrefSkipQuote", ">" },
 		{ "hrefSkipEnd", "</a>" },
 		{ "nobrSkipOpen", "nobr"},
-		{ "contentSource", "<meta property = \"og:site_name\" content = \"Новости Mail.ru\">"}
+		{ "contentSource", "<meta property =\"og:site_name\" content = \"Новости Mail.ru\">"}
 	};
 };
 
@@ -69,12 +69,16 @@ public:
 	vector<pair<string, string>> lexems = {
 		{ "headerStart", "<h1 class=\"article__title\">" },
 		{ "headerEnd", "</h1" },
-		{ "dateStart", "<div class=\"article__date\">" },
-		{ "articlePieceStart", "<div class=\"js - mediator - article\">"},
-		{ "articlePieceEnd", "<span class=\"article_end\"></span>" },
+		{ "dateStart", "<div class=\"article__date\">			" },
+		{ "articlePieceStart", "<div class=\"article__text\">"},
+		{ "articlePieceEnd", "<div class=\"vgtrk-cke_iframe\"" },
 		{ "hrefSkipStart", "<a href" },
-		{ "hrefSkipQuote", ">" },
-		{ "hrefSkipEnd", "</a>" },
+		{ "hrefSkipEnd", "</a" },
+		{ "parOpen", "<p" },
+		{ "parClose", "</p>" },
+		{ "quotes", "&quot" },
+		{ "ndash", "&ndash" },
+		{ "garb", "<div class=\"js-mediator-article\"" },
 		{ "contentSource", "<meta property=\"og:site_name\" content=\"vesti.ru\">"}
 	};
 };
@@ -89,8 +93,9 @@ public:
 		{ "articlePieceStart", "<div class=\"article g - relative js - rbcslider - article \">"},
 		{ "articlePieceEnd", "<div class=\"article__tags\">" },
 		{ "hrefSkipStart", "<a href" },
-		{ "hrefSkipQuote", ">" },
 		{ "hrefSkipEnd", "</a>" },
+		{ "parOpen", "<p>" },
+		{ "parClose", "</p>" },
 		{ "nobrSkipOpen", "&nbsp"},
 		{ "contentSource", "<meta property=\"og:site_name\" content=\"РБК\">"}
 	};

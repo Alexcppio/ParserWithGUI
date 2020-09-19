@@ -3,6 +3,7 @@
 #include "LexemsStructs.h"
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <string.h>
 #include <vector>
 #include <utility>
