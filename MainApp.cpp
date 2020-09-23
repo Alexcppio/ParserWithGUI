@@ -1,5 +1,10 @@
 ﻿#include "MainApp.h"
 
+void clientCode(const Creator& creator, HWND hWndMain)
+{
+	creator.createControl(hWndMain);
+}
+
 //Main window
 
 MainApp::MainApp()
@@ -207,119 +212,20 @@ void MainApp::createControls()
 	using std::runtime_error;
 	using namespace std::string_literals;
 
-	TCHAR szPath[MAX_PATH];
-	DWORD result = GetModuleFileName(NULL, szPath, MAX_PATH);
+	Creator *creator1 = new ButtonOkCreator();
+	clientCode(*creator1, hWndMain);
+	Creator *creator2 = new ButtonCancelCreator();
+	clientCode(*creator2, hWndMain);
+	Creator *creator3 = new ButtonFileCreator();
+	clientCode(*creator3, hWndMain);
+	Creator *creator4 = new EditAdressCreator();
+	clientCode(*creator4, hWndMain);
+	Creator *creator5 = new EditPathCreator();
+	clientCode(*creator5, hWndMain);
 
-
-	if (this->hWndButtonOk = CreateWindowEx(
-		0,
-		L"BUTTON",
-		L"OK",
-		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-		220, 200, 150, 50, this->hWndMain,
-		reinterpret_cast<HMENU>(MainApp::ControlsID::OKBUTTON_ID),
-		nullptr, nullptr
-	);  !this->hWndButtonOk)
-		throw runtime_error("Error, cannot create button OK."s);
-
-	if (this->hWndButtonCancel = CreateWindowEx(
-		0,
-		L"BUTTON",
-		L"Отмена",
-		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-		420, 200, 150, 50, this->hWndMain,
-		reinterpret_cast<HMENU>(MainApp::ControlsID::CANCELBUTTON_ID),
-		nullptr, nullptr
-	);  !this->hWndButtonCancel)
-		throw runtime_error("Error, cannot create button Cancel."s);
-
-	if (this->hWndButtonFile = CreateWindowEx(
-		0,
-		L"BUTTON",
-		L"...",
-		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-		510, 120, 50, 30, this->hWndMain,
-		reinterpret_cast<HMENU>(MainApp::ControlsID::OPENFILEBUTTON_ID),
-		nullptr, nullptr
-	);  !this->hWndButtonFile)
-		throw runtime_error("Error, cannot create button \"...\"."s);
-
-	if (this->hWndGroupbox = CreateWindowEx(
-		0,
-		L"BUTTON",
-		L"Шаблон",
-		WS_CHILD | WS_VISIBLE | BS_GROUPBOX,
-		20, 20, 180, 230, this->hWndMain,
-		reinterpret_cast<HMENU>(MainApp::ControlsID::GROUPBOX_ID),
-		nullptr, nullptr
-	);  !this->hWndGroupbox)
-		throw runtime_error("Error, cannot create groupbox."s);
-
-	if (this->hWndRadio1 = CreateWindowEx(
-		0,
-		L"BUTTON",
-		L"news.mail.ru",
-		WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON,
-		30, 50, 150, 50, this->hWndMain,
-		reinterpret_cast<HMENU>(MainApp::ControlsID::RADIOBUTTON1_ID),
-		nullptr, nullptr
-	);  !this->hWndRadio1)
-		throw runtime_error("Error, cannot create radiobutton 1."s);
-
-	if (this->hWndRadio2 = CreateWindowEx(
-		0,
-		L"BUTTON",
-		L"yandex.ru/news",
-		WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON,
-		30, 120, 150, 50, this->hWndMain,
-		reinterpret_cast<HMENU>(MainApp::ControlsID::RADIOBUTTON2_ID),
-		nullptr, nullptr
-	);  !this->hWndRadio2)
-		throw runtime_error("Error, cannot create radiobutton 2."s);
-
-	if (this->hWndRadio3 = CreateWindowEx(
-		0,
-		L"BUTTON",
-		L"news.google.com",
-		WS_CHILD | WS_VISIBLE | BS_AUTORADIOBUTTON,
-		30, 190, 150, 50, this->hWndMain,
-		reinterpret_cast<HMENU>(MainApp::ControlsID::RADIOBUTTON3_ID),
-		nullptr, nullptr
-	);  !this->hWndRadio3)
-		throw runtime_error("Error, cannot create radiobutton 3."s);
-
-	if (this->hWndEditAdress = CreateWindowEx(
-		WS_EX_CLIENTEDGE,
-		L"EDIT",
-		L"https://www.vesti.ru/article/2458794",
-		WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
-		220, 50, 350, 30, this->hWndMain,
-		reinterpret_cast<HMENU>(MainApp::ControlsID::EDITADDRESS_ID),
-		NULL, NULL
-	);  !this->hWndEditAdress)
-		throw runtime_error("Error, cannot create edit adress control."s);
-
-	if (this->hWndEditPath = CreateWindowEx(
-		WS_EX_CLIENTEDGE,
-		L"EDIT",
-		szPath,
-		WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
-		220, 120, 280, 30, this->hWndMain,
-		reinterpret_cast<HMENU>(MainApp::ControlsID::EDITPATH_ID),
-		NULL, NULL
-	);  !this->hWndEditPath)
-		throw runtime_error("Error, cannot create edit path control."s);
-
-	HFONT hFont = CreateFont(18, 0, 0, 0, FW_REGULAR, 0, 0, 0,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Roboto");
-	SendMessage(this->hWndButtonOk, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->hWndButtonCancel, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->hWndButtonFile, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->hWndGroupbox, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->hWndRadio1, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->hWndRadio2, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->hWndRadio3, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->hWndEditAdress, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
-	SendMessage(this->hWndEditPath, WM_SETFONT, reinterpret_cast<WPARAM>(hFont), TRUE);
+	delete creator1;
+	delete creator2;
+	delete creator3;
+	delete creator4;
+	delete creator5;
 }
